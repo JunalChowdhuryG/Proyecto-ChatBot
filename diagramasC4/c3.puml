@@ -1,0 +1,28 @@
+@startuml Diagrama C3
+set separator none
+title Sistema de Chatbot Universitario - Componentes del Backend
+
+left to right direction
+
+!include <C4/C4>
+!include <C4/C4_Container>
+!include <C4/C4_Component>
+
+Container_Boundary("BackendSpringBoot_boundary", "Backend (Spring Boot)") {
+  Component(LLMService, "Servicio de LLM", $techn="Spring Bean", $descr="Gestiona las consultas con Anything LLM.")
+  Component(QueryProcessor, "Procesador de Consultas", $techn="Spring Bean", $descr="Procesa consultas antes de enviarlas al LLM.")
+  Component(ResponseHandler, "Manejador de Respuestas", $techn="Spring Bean", $descr="Procesa las respuestas obtenidas del LLM.")
+}
+
+System(AnythingLLM, "Anything LLM", $descr="Sistema local para procesamiento de lenguaje natural.")
+ContainerDb(BaseDeDatos, "Base de Datos (PostgreSQL)", $techn="PostgreSQL", $descr="Almacena estadísticas y datos relacionados al chatbot.")
+
+Rel(QueryProcessor, FrontendReact, "Recibe solicitudes de los usuarios.")
+Rel(QueryProcessor, LLMService, "Envía consultas procesadas.")
+Rel(LLMService, AnythingLLM, "Envía solicitudes.")
+Rel(LLMService, ResponseHandler, "Envía resultados del LLM.")
+Rel(ResponseHandler, BaseDeDatos, "Almacena estadísticas de uso.")
+Rel(ResponseHandler, FrontendReact, "Entrega respuestas al usuario.")
+
+SHOW_LEGEND(true)
+@enduml

@@ -1,0 +1,73 @@
+@startuml Diagrama C4
+title Sistema de Chatbot Universitario - Nivel de Código
+
+package "com.uni.chatbot.controller" #DDDDDD {
+  class ConsultaController {
+    + handleConsulta()
+    + getEstadisticas()
+  }
+}
+
+package "com.uni.chatbot.service" #EEEEEE {
+  class ConsultaService {
+    + validarConsulta()
+    + prepararConsulta()
+    + enviarALMM()
+  }
+}
+
+package "com.uni.chatbot.mapper" #CCCCCC {
+  class ConsultaMapper {
+    + mapToLLMRequest()
+  }
+}
+
+package "com.uni.chatbot.client" #FFFFFF {
+  class LLMClient {
+    + sendToLLM()
+  }
+
+  class LLMResponseParser {
+    + parseLLMResponse()
+  }
+}
+
+package "com.uni.chatbot.response" #BBBBBB {
+  class ResponseFormatter {
+    + formatResponse()
+  }
+
+  class ResponseLogger {
+    + logResponse()
+  }
+}
+
+package "Frontend React" #AADDFF {
+  class ReactFrontend {
+    + interactWithChatbotAPI()
+  }
+}
+
+package "Anything LLM" #FFAAAA {
+  class LLMServiceAPI {
+    + processQuery()
+  }
+}
+
+package "Database" #A5D6A7 {
+  class PostgreSQL {
+    + saveStatistics()
+  }
+}
+
+ReactFrontend --> ConsultaController : Llama a la API REST
+ConsultaController --> ConsultaService : Procesa la consulta
+ConsultaService --> ConsultaMapper : Convierte datos de usuario
+ConsultaMapper --> LLMClient : Crea la solicitud para el LLM
+LLMClient --> LLMServiceAPI : Envía solicitud HTTP
+LLMServiceAPI --> LLMResponseParser : Devuelve la respuesta
+LLMResponseParser --> ResponseFormatter : Formatea la respuesta para el usuario
+ResponseFormatter --> ReactFrontend : Envía la respuesta formateada
+ResponseFormatter --> ResponseLogger : Registra datos en la base de datos
+ResponseLogger --> PostgreSQL : Guarda estadísticas de uso
+@enduml

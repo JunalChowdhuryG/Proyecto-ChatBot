@@ -1,0 +1,32 @@
+@startuml Diagrama C2
+set separator none
+title Sistema de Chatbot Universitario - Contenedores
+
+left to right direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+System(AnythingLLM, "Anything LLM", $descr="Sistema local para procesamiento de lenguaje natural.")
+Person(Estudiante, "Estudiante", $descr="")
+Person(Docente, "Docente", $descr="")
+Person(PersonalAdministrativo, "Personal Administrativo", $descr="")
+Person(Administrador, "Administrador", $descr="")
+
+System_Boundary("SistemadeChatbotUniversitario_boundary", "Sistema de Chatbot Universitario") {
+  Container(FrontendReact, "Frontend (React)", $techn="React Application", $descr="Interfaz gráfica para interactuar con el chatbot.")
+  Container(BackendSpringBoot, "Backend (Spring Boot)", $techn="Spring Boot Application", $descr="Procesa solicitudes y conecta con Anything LLM.")
+  ContainerDb(BasedeDatosPostgreSQL, "Base de Datos (PostgreSQL)", $techn="PostgreSQL", $descr="Guarda estadísticas y datos relacionados al chatbot.")
+}
+
+Rel(Estudiante, FrontendReact, "Interacción con la interfaz gráfica.")
+Rel(Docente, FrontendReact, "Interacción con la interfaz gráfica.")
+Rel(PersonalAdministrativo, FrontendReact, "Interacción con la interfaz gráfica.")
+Rel(FrontendReact, BackendSpringBoot, "Envía solicitudes.")
+Rel(BackendSpringBoot, AnythingLLM, "Procesa consultas.")
+Rel(BackendSpringBoot, BasedeDatosPostgreSQL, "Guarda estadísticas.")
+Rel(Administrador, BackendSpringBoot, "Gestiona y actualiza datos.")
+
+SHOW_LEGEND(true)
+@enduml

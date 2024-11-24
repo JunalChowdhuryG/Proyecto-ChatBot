@@ -1,0 +1,26 @@
+@startuml Diagrama C1
+set separator none
+title Sistema de Chatbot Universitario - Contexto del Sistema
+
+left to right direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+
+Person(Estudiante, "Estudiante", $descr="Consulta reglamentos, trámites y calendario académico.")
+Person(Docente, "Docente", $descr="Consulta reglamentos y trámites administrativos.")
+Person(PersonalAdministrativo, "Personal Administrativo", $descr="Consulta información administrativa y reglamentos.")
+Person(Administrador, "Administrador", $descr="Gestiona y entrena el sistema.")
+System(SistemadeChatbotUniversitario, "Sistema de Chatbot Universitario", $descr="Asistente virtual que responde preguntas relacionadas con la vida académica.")
+System(PortalORCEIntralu, "Portal ORCE/Intralu", $descr="Portal académico para acceder al chatbot.")
+System(AnythingLLM, "Anything LLM", $descr="Sistema local de procesamiento de lenguaje natural.")
+
+Rel(Estudiante, SistemadeChatbotUniversitario, "Realiza consultas.")
+Rel(Docente, SistemadeChatbotUniversitario, "Realiza consultas.")
+Rel(PersonalAdministrativo, SistemadeChatbotUniversitario, "Consulta información administrativa.")
+Rel(Administrador, SistemadeChatbotUniversitario, "Gestiona documentos y revisa estadísticas.")
+Rel(SistemadeChatbotUniversitario, PortalORCEIntralu, "Se integra para acceso.")
+Rel(SistemadeChatbotUniversitario, AnythingLLM, "Envía consultas para procesamiento.")
+
+SHOW_LEGEND(true)
+@enduml
