@@ -5,27 +5,25 @@ import com.uni.chatbot.dto.ChatResponseDTO;
 import com.uni.chatbot.service.LLMService;
 import com.uni.chatbot.service.QueryProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/api/v1")
 public class ChatController {
 
     private final QueryProcessor queryProcessor;
-    private final LLMService llmService;
 
-    @Autowired
-    public ChatController(QueryProcessor queryProcessor, LLMService llmService) {
+    public ChatController(QueryProcessor queryProcessor) {
         this.queryProcessor = queryProcessor;
-        this.llmService = llmService;
     }
 
-    @PostMapping
-    public ChatResponseDTO sendMessage(@RequestParam String message) {
-        ChatRequestDTO requestDTO = queryProcessor.processQuery(message);
-        return llmService.sendToLLM(requestDTO);
+    @PostMapping("/chat")
+    public ResponseEntity<ChatResponseDTO> chat(@RequestBody ChatRequestDTO request) {
+        if (request.getMessage() == null || request.getMessage().isEmpty()) {
+            return ResponseEntity.badRequest().body(new ChatResponseDTO("El mensaje no puede estar vacío."));
+        }
+        ChatResponseDTO response = queryProcessor.processQuery(request);
+        return ResponseEntity.ok(response);
     }
 }
