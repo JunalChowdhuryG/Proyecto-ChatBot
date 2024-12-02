@@ -1,0 +1,24 @@
+@startuml Diagrama-Secuencia-Usuario
+actor Usuario
+actor "ORCE/Intralu" as ORCE
+actor "Interfaz del Chatbot" as InterfazUsuario
+participant "Backend del Chatbot (Spring Boot)" as BackendChatbot
+participant "Anything LLM" as AnythingLLM
+participant "Base de Datos (PostgreSQL)" as PostgreSQL
+
+== Acceso al Chatbot desde ORCE ==
+Usuario -> ORCE: Acceder a la plataforma
+ORCE --> Usuario: Mostrar página principal
+Usuario -> ORCE: Click en botón del Chatbot
+ORCE -> InterfazUsuario: Abrir interfaz del Chatbot
+
+== Consultas al Chatbot ==
+Usuario -> InterfazUsuario: Realizar consulta
+InterfazUsuario -> BackendChatbot: Enviar consulta
+BackendChatbot -> AnythingLLM: Procesar consulta en lenguaje natural
+AnythingLLM --> BackendChatbot: Intención identificada y respuesta inicial
+BackendChatbot -> PostgreSQL: Consultar información adicional (si aplica)
+PostgreSQL --> BackendChatbot: Respuesta complementaria
+BackendChatbot --> InterfazUsuario: Respuesta procesada
+InterfazUsuario --> Usuario: Mostrar respuesta final
+@enduml

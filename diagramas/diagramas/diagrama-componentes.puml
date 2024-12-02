@@ -1,0 +1,24 @@
+@startuml Diagrama-Componentes
+package "Frontend" {
+    [Interfaz Chatbot]
+    [Cliente API]
+}
+
+package "Backend" {
+    [Controlador Chat]
+    [Servicio LLM]
+    [Procesador Consultas]
+    [Base de Datos PostgreSQL]
+}
+
+package "API Externa" {
+    [API Anything LLM]
+}
+
+[Interfaz Chatbot] --> [Cliente API] : "Llamadas REST"
+[Cliente API] --> [Controlador Chat] : "Solicitudes HTTP"
+[Controlador Chat] --> [Servicio LLM] : "Procesar Consultas"
+[Servicio LLM] --> [Procesador Consultas] : "Analizar Consultas"
+[Procesador Consultas] --> [Base de Datos PostgreSQL] : "Guardar Estadisticas/Historial"
+[Servicio LLM] --> [API Anything LLM] : "Invocar API Externa"
+@enduml

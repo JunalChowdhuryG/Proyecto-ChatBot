@@ -1,0 +1,38 @@
+@startuml Diagrama Clases Diseño
+package Backend {
+    class Controlador_Chat {
+        + manejarSolicitudChat(solicitud: SolicitudChatDTO): RespuestaChatDTO
+    }
+
+    class Servicio_LLM {
+        + procesarConsulta(solicitud: String): String
+    }
+
+    class Procesador_Consultas {
+        + analizarConsulta(entrada: String): String
+    }
+
+    class SolicitudChatDTO {
+        - usuarioId: int
+        - mensaje: String
+    }
+
+    class RespuestaChatDTO {
+        - respuestaTexto: String
+        - marcaTiempo: LocalDateTime
+    }
+}
+
+package BaseDeDatos {
+    class Base_Datos_PostgreSQL {
+        + guardarHistorialChat(chatId: String, usuarioId: int, mensaje: String)
+        + obtenerHistorialChat(usuarioId: int): List<String>
+    }
+}
+
+Controlador_Chat --> SolicitudChatDTO
+Controlador_Chat --> RespuestaChatDTO
+Controlador_Chat --> Servicio_LLM
+Servicio_LLM --> Procesador_Consultas
+Procesador_Consultas --> Base_Datos_PostgreSQL
+@enduml

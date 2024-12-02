@@ -1,0 +1,24 @@
+@startuml Modelo-Disenio
+package "Frontend (React/Next.js)" {
+    component "Interfaz Chatbot" as Interfaz_Chatbot
+    component "Cliente API" as Cliente_API
+}
+
+package "Backend (Spring Boot)" {
+    component "Controlador Chat" as Controlador_Chat
+    component "Servicio LLM" as Servicio_LLM
+    component "Procesador de Consultas" as Procesador_Consultas
+    component "Base de Datos PostgreSQL" as Base_Datos_PostgreSQL
+}
+
+package "Externo" {
+    component "API Anything LLM" as API_LLM
+}
+
+Interfaz_Chatbot --> Cliente_API : "Solicitudes"
+Cliente_API --> Controlador_Chat : "Llamadas REST"
+Controlador_Chat --> Servicio_LLM : "Procesar Consulta"
+Servicio_LLM --> Procesador_Consultas : "Analizar"
+Procesador_Consultas --> Base_Datos_PostgreSQL : "Consultar Datos"
+Servicio_LLM --> API_LLM : "Invocar LLM"
+@enduml

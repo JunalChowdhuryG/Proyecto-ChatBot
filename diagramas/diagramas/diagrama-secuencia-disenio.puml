@@ -1,0 +1,23 @@
+@startuml Diagrama-Secuencia-Disenio
+actor Usuario
+participant "Interfaz Chatbot (Frontend)" as Interfaz
+participant "Cliente API" as Cliente
+participant "Controlador Chat" as Controlador
+participant "Servicio LLM" as Servicio
+participant "Procesador Consultas" as Procesador
+participant "Base de Datos PostgreSQL" as BD
+participant "API Anything LLM" as API
+
+Usuario -> Interfaz: Enviar Consulta
+Interfaz -> Cliente: Solicitud de Consulta
+Cliente -> Controlador: POST /chat
+Controlador -> Servicio: procesarConsulta(solicitud)
+Servicio -> Procesador: analizarConsulta(solicitud)
+Procesador -> BD: Consultar Datos
+BD --> Procesador: Retornar Datos
+Servicio -> API: Invocar API LLM
+API --> Servicio: Respuesta del LLM
+Servicio --> Controlador: Retornar Respuesta
+Controlador --> Cliente: Respuesta
+Cliente --> Interfaz: Mostrar Resultados
+@enduml

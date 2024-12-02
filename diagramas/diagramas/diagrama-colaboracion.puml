@@ -1,0 +1,22 @@
+@startuml Diagrama-Colaboracion
+actor Usuario as usuario
+boundary Interfaz_Chatbot as Interfaz
+control Cliente_API as Cliente
+control Controlador_Chat as Controlador
+entity Procesador_Consultas as Procesador
+database Base_Datos_PostgreSQL as BD
+control Servicio_LLM as Servicio
+entity API_Anything_LLM as API
+
+usuario --> Interfaz: "Enviar Consulta"
+Interfaz --> Cliente: "Enviar Solicitud"
+Cliente --> Controlador: "POST /chat"
+Controlador --> Servicio: "procesarConsulta(solicitud)"
+Servicio --> Procesador: "analizarConsulta(solicitud)"
+Procesador --> BD: "Registrar Historial/Obtener Estadísticas"
+Servicio --> API: "Invocar API LLM"
+API --> Servicio: "Retornar Respuesta"
+Servicio --> Controlador: "Retornar Respuesta"
+Controlador --> Cliente: "Respuesta"
+Cliente --> Interfaz: "Mostrar Resultados"
+@enduml

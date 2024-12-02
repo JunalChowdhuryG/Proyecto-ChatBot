@@ -1,0 +1,7 @@
+@startuml Diagrama-Estados
+[*] --> EsperandoEntrada
+EsperandoEntrada --> ProcesandoSolicitud : Usuario envía consulta
+ProcesandoSolicitud --> ConsultandoDatos : Llamar a la base de datos o LLM
+ConsultandoDatos --> ProveyendoRespuesta : Datos obtenidos
+ProveyendoRespuesta --> EsperandoEntrada : Respuesta enviada
+@enduml

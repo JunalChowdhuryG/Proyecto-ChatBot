@@ -1,0 +1,44 @@
+@startuml Diagrama-Secuencia-Administrador
+actor Administrador
+participant "ORCE/Intralu" as ORCE
+actor "Interfaz del Chatbot" as InterfazUsuario
+participant "Backend del Chatbot (Spring Boot)" as BackendChatbot
+participant "Módulo de Administración" as AdminModule
+participant "Anything LLM" as AnythingLLM
+participant "Base de Datos (PostgreSQL)" as PostgreSQL
+participant "Estadísticas de Uso" as UsageStats
+
+== Acceso al Chatbot ==
+Administrador -> ORCE: Acceder a la plataforma
+ORCE --> Administrador: Mostrar página principal
+Administrador -> ORCE: Click en botón del Chatbot
+ORCE -> InterfazUsuario: Abrir interfaz del Chatbot
+
+== Entrenamiento del Chatbot ==
+Administrador -> InterfazUsuario: Subir nuevos datos de entrenamiento
+InterfazUsuario -> BackendChatbot: Enviar datos de entrenamiento
+BackendChatbot -> AdminModule: Procesar datos de entrenamiento
+AdminModule -> AnythingLLM: Actualizar conocimiento con nuevos datos
+AnythingLLM --> AdminModule: Confirmación de actualización
+AdminModule --> BackendChatbot: Proceso completado
+BackendChatbot --> InterfazUsuario: Confirmar entrenamiento exitoso
+InterfazUsuario --> Administrador: Confirmación final
+
+== Revisión de Consultas Comunes ==
+Administrador -> InterfazUsuario: Solicitar estadísticas de consultas
+InterfazUsuario -> BackendChatbot: Enviar solicitud de métricas
+BackendChatbot -> UsageStats: Generar estadísticas
+UsageStats --> BackendChatbot: Métricas generadas
+BackendChatbot --> InterfazUsuario: Enviar datos de métricas
+InterfazUsuario --> Administrador: Mostrar estadísticas
+
+== Gestión de Usuarios ==
+Administrador -> InterfazUsuario: Administrar usuarios
+InterfazUsuario -> BackendChatbot: Enviar cambios en usuarios
+BackendChatbot -> AdminModule: Actualizar configuración de usuarios
+AdminModule -> PostgreSQL: Guardar cambios en la base de datos
+PostgreSQL --> AdminModule: Confirmación de cambios
+AdminModule --> BackendChatbot: Confirmación de actualización
+BackendChatbot --> InterfazUsuario: Cambios aplicados
+InterfazUsuario --> Administrador: Confirmación final
+@enduml

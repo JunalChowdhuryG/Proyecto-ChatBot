@@ -1,0 +1,59 @@
+@startuml Diagrama Secuencia
+== Link de donde compilar https://www.plantuml.com/plantuml/uml ==
+actor Usuario
+actor "Interfaz Chatbot (React/Next.js)" as InterfazUsuario
+participant "Backend del Chatbot (Spring Boot)" as BackendChatbot
+participant "Servicio LLM" as ServicioLLM
+participant "Procesador de Consultas" as ProcesadorConsultas
+participant "Base de Datos (PostgreSQL)" as BaseDatos
+participant "Anything LLM API" as AnythingLLM
+participant "Módulo de Entrenamiento" as TrainingModule
+participant "Estadísticas de Uso" as UsageStats
+
+== Caso de Uso 1: Ingresar a la Plataforma ==
+Usuario -> InterfazUsuario: Ingresar a la plataforma
+InterfazUsuario --> Usuario: Mostrar pantalla principal
+
+== Caso de Uso 2: Consulta ==
+Usuario -> InterfazUsuario: Realizar consulta
+InterfazUsuario -> BackendChatbot: POST /consulta
+BackendChatbot -> ServicioLLM: procesarConsulta(solicitud)
+ServicioLLM -> ProcesadorConsultas: analizarConsulta(consulta)
+ProcesadorConsultas -> BaseDatos: Consultar datos relevantes
+BaseDatos --> ProcesadorConsultas: Devolver resultados
+ServicioLLM -> AnythingLLM: Invocar modelo LLM
+AnythingLLM --> ServicioLLM: Respuesta del modelo
+ServicioLLM --> BackendChatbot: Respuesta procesada
+BackendChatbot --> InterfazUsuario: Respuesta completa
+InterfazUsuario --> Usuario: Mostrar respuesta
+
+== Caso de Uso 8: Consulta Irrelevante (Fuera de Alcance) ==
+Usuario -> InterfazUsuario: Realizar consulta irrelevante
+InterfazUsuario -> BackendChatbot: POST /consulta
+BackendChatbot -> ServicioLLM: procesarConsulta(solicitud)
+ServicioLLM -> AnythingLLM: Invocar modelo LLM
+AnythingLLM --> ServicioLLM: Intención no identificada
+ServicioLLM --> BackendChatbot: Indicar fuera de alcance
+BackendChatbot --> InterfazUsuario: Mensaje de consulta irrelevante
+InterfazUsuario --> Usuario: Mostrar mensaje de consulta irrelevante
+
+== Caso de Uso 9: Entrenar al Chatbot ==
+Administrador -> TrainingModule: Subir nuevos datos para entrenamiento
+TrainingModule -> BackendChatbot: Actualizar conocimiento del chatbot
+BackendChatbot -> BaseDatos: Almacenar nuevos datos y reglas
+
+== Caso de Uso 10: Revisar Consultas Comunes ==
+Administrador -> UsageStats: Solicitar estadísticas de consultas comunes
+UsageStats --> Administrador: Enviar datos de consultas más frecuentes
+
+== Caso de Uso 11: Gestionar Usuarios ==
+Administrador -> InterfazUsuario: Gestionar usuarios
+InterfazUsuario --> BackendChatbot: POST /gestionarUsuarios
+BackendChatbot --> BaseDatos: Actualizar datos de usuarios
+BackendChatbot --> InterfazUsuario: Confirmación de gestión
+InterfazUsuario --> Administrador: Confirmación de cambios realizados
+
+== Caso de Uso 12: Monitorizar el Rendimiento del Chatbot ==
+Administrador -> UsageStats: Solicitar métricas de rendimiento
+UsageStats --> Administrador: Enviar datos de rendimiento
+@enduml

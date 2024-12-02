@@ -1,0 +1,21 @@
+@startuml Diagrama-Despliegue
+node "Dispositivo del Usuario" {
+    component "Interfaz Chatbot (React/Next.js)"
+}
+
+node "Servidor de Aplicación" {
+    component "Backend Spring Boot"
+}
+
+node "Servidor de Base de Datos" {
+    component "Base de Datos PostgreSQL"
+}
+
+node "Servidor API Externa" {
+    component "API Anything LLM"
+}
+
+"Interfaz Chatbot (React/Next.js)" --> "Backend Spring Boot" : "Solicitudes HTTP"
+"Backend Spring Boot" --> "Base de Datos PostgreSQL" : "Consultas a la Base de Datos"
+"Backend Spring Boot" --> "API Anything LLM" : "Llamadas a la API"
+@enduml
