@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Universitario</title>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+    <div class="background"></div>
+
+    <!-- Botón para abrir el chat -->
+    <button class="chatbot-button" id="chatbotButton">
+        <img src="public/assets/chatbot1.jpeg" alt="Abrir Chatbot">
+    </button>
+    
+    <!-- Contenedor del chat emergente -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h2>Chatbot Universitario</h2>
+            <button class="close-button" id="closeButton">×</button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-message bot">
+                ¡Hola! Soy Chat-UNI, ¿en qué puedo ayudarte hoy?
+            </div>
+        </div>
+        <div class="chat-footer">
+            <!-- Botones con consultas sugeridas -->
+            <div class="suggested-messages" id="suggestedMessages">
+                <button class="suggestion-button" data-message="¿Cuál es el procedimiento para cambiar de carrera?">¿Cuál es el procedimiento para cambiar de carrera?</button>
+                <button class="suggestion-button" data-message="¿Cómo puedo obtener una copia de mi contrato laboral?">¿Cómo puedo obtener una copia de mi contrato laboral?</button>
+                <button class="suggestion-button" data-message="¿Cuál es el procedimiento para renovar mi carnet universitario?">¿Cuál es el procedimiento para renovar mi carnet universitario?</button>
+            </div>
+            <div class="input-container">
+                <input type="text" id="chatInput" placeholder="Escribe tu mensaje...">
+                <button id="sendButton">Enviar</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="src/script.js"></script>
+</body>
+</html>
